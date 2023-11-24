@@ -15,7 +15,8 @@ NAME = libftprintf.a
 SRC = ft_itoa.c ft_printf_address.c ft_printf_hex.c ft_printf_unsigned.c ft_printf_utils.c ft_printf.c ft_putchar_fd.c
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-OBJ = $(patsubst %.c,%.o,$(SRC))
+OBJ = $(SRC:.c=.o)
+
 #Text
 END=$'\x1b[0m
 BOLD=$'\x1b[1m
@@ -33,20 +34,18 @@ WHITE=$'\x1b[37m
 
 all: $(NAME)
 
-%.o: %.c ft_printf.h
-		$(CC) -c $(CFLAGS) $< -o $@
-
 $(NAME): $(OBJ)
 		@ar rc $(NAME) $(OBJ)
 		@echo "${BOLD}${PURPLE} ft_Printf ${BOLD}${CYAN}HAS BEEN COMPILED SUCCESSFULLY"
 
+%.o: %.c ft_printf.h
+		$(CC) $(CFLAGS) -c $<
 clean:
 		@rm -f $(OBJ)
 		@echo "${BOLD}${GREEN} THE FILES HAS BEEN CLEANED SUCCESSFULLY"
 fclean:
 		@rm -f $(NAME)
+		@rm -f $(OBJ)
 		@echo "${BOLD}${PURPLE} libftprintf.a ${BOLD}${WHITE}HAS BEEN CLEANED SUCCESSFULLY"
 
 re: fclean all
-
-.PHONY: all clean fclean re
